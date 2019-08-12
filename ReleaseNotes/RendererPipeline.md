@@ -163,11 +163,7 @@ __Warning:__ The one caveat when ordering is when we have a collection of siblin
 
 At this point, there is a disagreement between the depth and z-ordering, so the Renderer has to make a choice. In particular, for our implementation, __depth-ordering is prioritised over z-ordering__. The motivation is that a geometric ordering is the more appropriate choice to dynamically alter the render ordering of nodes that may be moving around in world. Below is a video showcasing this idea
 
-<script src="http://vjs.zencdn.net/4.0/video.js"></script>
-
-<video id="depth_ordering" class="video-js vjs-default-skin" controls
-preload="auto" width="683" height="384"
-data-setup="{}">
+<video id="depth_ordering" controls="contorls" preload="auto" width="683" height="384">
 <source src="https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/DynamicDepthOrdering.mp4" type='video/mp4'>
 </video>
 
