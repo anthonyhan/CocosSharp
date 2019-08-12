@@ -8,7 +8,7 @@ In CocosSharp v.1.5.0.0 we have overhauled the way we perform rendering, with a 
 
 A CocosSharp game comprises of a root <code>CCScene</code> object along with a subsequent chain of <code>CCNode</code> children &mdash; the so-called <em>scene graph</em>. Starting a game initialises a run-loop that periodically calls the scene's <code>Visit</code> method, that in-turn traverses through the entire scene-graph, calling <code>Visit</code> on all node children as represented schematically in the diagram below.
 
-![Scene traversal](https://raw.githubusercontent.com/mono/CocosSharp/develop/ReleaseNotes/RendererPipelineNotesContent/SceneTraversal.png "Scene traversal")
+![Scene traversal](https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/SceneTraversal.png "Scene traversal")
 
 Previously, rendering was performed within a node's <code>Visit</code> method and thus the number of draw calls grew linearly with the number of nodes in a given scene. This is very much a naive approach to rendering as it doesn't leverage the possibility that the rendering of adjacent nodes can be grouped together into a single draw call. For instance, looking at our sample scene-graph, we notice that our children sprites can be grouped into two, with each group sharing the same underlying texture. Now, drawing a sprite essentially consists of specifying the quad vertices and texture region. Hence, for each group of sprites, if we batch all these quads together we can draw all of them with a <em>single</em> draw call. This was precisely the role of <code>CCSpriteBatchNode</code>. A user would add common sprites as children to the batch node to reduce the number of draw calls. But this class is bundled with a few problems:
 
@@ -16,7 +16,7 @@ Previously, rendering was performed within a node's <code>Visit</code> method an
 
 * It broke the ordering of a scene-graph. The implicit pre-condition of using the <code>CCSpriteBatchNode</code> was that it assumed that the child sprites you were adding to it were adjacent to one another, however there was no way to enforce this. For example, suppose we had the following scene-graph
 
-![SpriteBatch scene breaking](https://raw.githubusercontent.com/mono/CocosSharp/develop/ReleaseNotes/RendererPipelineNotesContent/SpriteBatchSceneBreaking.png "SpriteBatch scene breaking")
+![SpriteBatch scene breaking](https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/SpriteBatchSceneBreaking.png "SpriteBatch scene breaking")
 
 The problem is that because the grouped sprites will all be drawn together, we have now broken the ordering of the scene-graph. Ultimately <code>CCSpriteBatchNode</code> is not in and of itself truly a renderable object and has no place being part of the scene-graph.
 
@@ -28,7 +28,7 @@ The problem is that because the grouped sprites will all be drawn together, we h
 
 With the previous background in mind, the primary motivation for the new renderer pipeline was to eliminate the problems and limitations of <code>CCSpriteBatchNode</code>. In particular, we now have the new <code>CCRenderer</code> class that maintains a render queue that is associated with a given scene. When traversing a scene-graph and calling <code>Visit</code> on a give node, rather than performing the drawing then and there, instead a corresponding <code>CCRenderCommand</code> is passed to the renderer. Once the entire scene-graph has been visited, the render queue is then sorted (based on traits of the render command such as order of arrival, depth, material id) and then the render commands are processed as seen below.
 
-![Renderer](https://raw.githubusercontent.com/mono/CocosSharp/develop/ReleaseNotes/RendererPipelineNotesContent/RendererSteps.png "Renderer")
+![Renderer](https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/RendererSteps.png "Renderer")
 
 The main benefit is that sprite render commands adjacent to one another in the queue that share the same texture (more precisely the same texture and blending options) will be processed concurrently &mdash; that is, we get automatic batching on the fly <em>without</em> the need for <code>CCSpriteBatchNode</code>! Moreover, if a user is making use of depth-testing (see upcoming section), we further get correct depth-ordering as well!
 
@@ -159,7 +159,7 @@ __Warning:__ Remember, <code>ZOrder</code> has nothing to do with the geometric 
 
 __Warning:__ The one caveat when ordering is when we have a collection of siblings with non-uniform depth (i.e. different <code>VertexZ</code> property values) and a user is making use of depth-testing. For example, consider the following scene
 
-![ZOrdering vs depth ordering](https://raw.githubusercontent.com/mono/CocosSharp/develop/ReleaseNotes/RendererPipelineNotesContent/ZOrderVsDepthOrder.png "ZOrdering vs depth ordering")
+![ZOrdering vs depth ordering](https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/ZOrderVsDepthOrder.png "ZOrdering vs depth ordering")
 
 At this point, there is a disagreement between the depth and z-ordering, so the Renderer has to make a choice. In particular, for our implementation, __depth-ordering is prioritised over z-ordering__. The motivation is that a geometric ordering is the more appropriate choice to dynamically alter the render ordering of nodes that may be moving around in world. Below is a video showcasing this idea
 
@@ -168,7 +168,7 @@ At this point, there is a disagreement between the depth and z-ordering, so the 
 <video id="depth_ordering" class="video-js vjs-default-skin" controls
 preload="auto" width="683" height="384"
 data-setup="{}">
-<source src="https://raw.githubusercontent.com/mono/CocosSharp/develop/ReleaseNotes/RendererPipelineNotesContent/DynamicDepthOrdering.mp4" type='video/mp4'>
+<source src="https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/DynamicDepthOrdering.mp4" type='video/mp4'>
 </video>
 
 ## Conclusion
@@ -179,7 +179,7 @@ Ultimately, the aim of the new renderer pipeline is to help lessen the developer
 
 Below are some sample screenshots showcasing the observed performance gains. In particular, the highlighted statistics show the change in the number of draw counts before and after the integration of the renderer pipeline.
 
-![MainMenuBeforeAfter](https://raw.githubusercontent.com/mono/CocosSharp/develop/ReleaseNotes/RendererPipelineNotesContent/MainMenuBeforeAfter.png "MainMenuBeforeAfter")
+![MainMenuBeforeAfter](https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/MainMenuBeforeAfter.png "MainMenuBeforeAfter")
 
-![LabelBeforeAfter](https://raw.githubusercontent.com/mono/CocosSharp/develop/ReleaseNotes/RendererPipelineNotesContent/LabelBeforeAfter.png "LabelBeforeAfter")
+![LabelBeforeAfter](https://raw.githubusercontent.com/mono/CocosSharp/master/ReleaseNotes/RendererPipelineNotesContent/LabelBeforeAfter.png "LabelBeforeAfter")
 
