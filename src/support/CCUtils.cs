@@ -28,7 +28,7 @@ using System;
 #if MACOS
 using MonoMac.OpenGL;
 #elif WINDOWSGL || LINUX
-using OpenTK.Graphics.OpenGL;
+//using OpenTK.Graphics.OpenGL;
 #else
 using OpenTK.Graphics.ES20;
 using BeginMode = OpenTK.Graphics.ES20.All;
@@ -59,10 +59,10 @@ namespace CocosSharp
             // Setup extensions.
 			if(GLExtensions == null) {
                 List<string> extensions = new List<string>();
-                #if GLES
+#if GLES
                 var extstring = GL.GetString(RenderbufferStorage.Extensions);                       
 				CheckGLError();
-				#elif MACOS
+#elif MACOS
 
 				// for right now there are errors with GL before we even get here so the 
 				// CheckGLError for MACOS is throwing errors even though the extensions are read
@@ -70,8 +70,8 @@ namespace CocosSharp
 				// until we find the real error.
 				var extstring = GL.GetString(StringName.Extensions);
                 
-				#else
-                var extstring = GL.GetString(StringName.Extensions);
+#else
+                var extstring = "";// GL.GetString(StringName.Extensions);
 				CheckGLError();
                 #endif
                 
@@ -94,9 +94,9 @@ namespace CocosSharp
             if (error != All.False)
                 throw new Exception("GL.GetError() returned " + error.ToString());
         #elif OPENGL
-            var error = GL.GetError();
-            if (error != ErrorCode.NoError)
-                throw new Exception("GL.GetError() returned " + error.ToString());
+            //var error = GL.GetError();
+            //if (error != ErrorCode.NoError)
+            //    throw new Exception("GL.GetError() returned " + error.ToString());
         #endif
 
         }

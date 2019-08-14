@@ -14,7 +14,6 @@ using Foundation;
 using GameKit;
 using UIKit;
 using CoreGraphics;
-using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.Input.Touch;
 
 using Microsoft.Xna.Framework;

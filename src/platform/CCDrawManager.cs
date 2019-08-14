@@ -113,8 +113,8 @@ namespace CocosSharp
 
         public SpriteBatch SpriteBatch { get; set; }
 
-        internal ulong DrawCount { get; set; }
-        internal ulong DrawPrimitivesCount { get; set; }
+        internal long DrawCount { get; set; }
+        internal long DrawPrimitivesCount { get; set; }
 
         internal BasicEffect PrimitiveEffect { get; private set; }
         internal AlphaTestEffect AlphaTestEffect { get; private set; }
