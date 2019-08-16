@@ -31,7 +31,7 @@ namespace CocosSharp
             // create a transparent color layer
             // in which we are going to add our rendertextures
             var bounds = Layer.VisibleBoundsWorldspace;
-            CCRect viewportRect = new CCRect(Viewport.Bounds);
+            CCRect viewportRect = Viewport.ViewportInPixels;
 
             // create the second render texture for outScene
             CCRenderTexture texture = new CCRenderTexture(bounds.Size, viewportRect.Size);

@@ -758,10 +758,15 @@ namespace CocosSharp
             }
         }
 
-        public virtual CCGameView GameView
+        public virtual CCWindow Window
         {
-            get { return Scene != null ? Scene.GameView : null; }
-            protected set { }
+            get { return Scene != null ? Scene.Window : null; }
+            set { Scene.Window = value; }
+        }
+
+        public virtual CCApplication Application
+        {
+            get { return Window != null ? Window.Application : null; }
         }
 
         public virtual CCDirector Director
@@ -780,19 +785,20 @@ namespace CocosSharp
             }
         }
 
-        internal Viewport Viewport
+        public virtual CCViewport Viewport
         {
-            get { return GameView.Viewport; }
+            get { return Scene != null ? Scene.Viewport : null; }
+            set { Scene.Viewport = value; }
         }
 
         public CCRenderer Renderer
         {
-            get { return GameView != null ? GameView.Renderer : DrawManager.Renderer; }
+            get { return Window != null ? Window.Renderer : DrawManager.Renderer; }
         }
 
         internal CCDrawManager DrawManager 
         {
-            get { return GameView != null ? GameView.DrawManager : CCDrawManager.SharedDrawManager; }
+            get { return Window != null ? Window.DrawManager : CCDrawManager.SharedDrawManager; }
         }
 
         internal virtual CCEventDispatcher EventDispatcher 
@@ -856,7 +862,7 @@ namespace CocosSharp
 
         CCActionManager ActionManager
         {
-            get { return GameView != null ? GameView.ActionManager : null; }
+            get { return Application != null ? Application.ActionManager : null; }
         }
 
         #endregion Properties
@@ -1116,7 +1122,7 @@ namespace CocosSharp
 
         void OnSceneViewportChanged (object sender, EventArgs e)
         {
-            if (Scene != null && GameView != null && Camera != null) 
+            if (Scene != null && Window != null && Camera != null) 
             {
                 ViewportChanged ();
                 VisibleBoundsChanged ();
@@ -1410,7 +1416,7 @@ namespace CocosSharp
 
             // We want all our children to have the same layer as us
             // Set this before we call child.OnEnter
-            child.GameView = this.GameView;
+            child.Window = this.Window;
             child.Layer = this.Layer;
             child.Scene = this.Scene;
 

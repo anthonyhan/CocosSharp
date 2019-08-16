@@ -48,7 +48,7 @@ namespace CocosSharp
 
         #region Properties
 
-        public CCGameView GameView { get; set; }
+        public CCWindow Window { get; set; }
 
         bool Active { get; set; }
         bool Emulating { get; set; }
@@ -165,9 +165,9 @@ namespace CocosSharp
 
         #region Constructors
 
-        public CCAccelerometer(CCGameView gameView)
+        public CCAccelerometer(CCWindow window)
         {
-            GameView = gameView;
+            Window = window;
 
 #if IOS
             accelerometer = new CoreMotion.CMMotionManager();
@@ -258,7 +258,7 @@ namespace CocosSharp
 
         public void Update()
         {
-                var dispatcher = GameView.EventDispatcher;
+            var dispatcher = Window.EventDispatcher;
             if (dispatcher.IsEventListenersFor(CCEventListenerAccelerometer.LISTENER_ID))
             {
                 if (Emulating)

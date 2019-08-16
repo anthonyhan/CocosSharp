@@ -50,9 +50,9 @@ namespace CocosSharp
         }
 
         public CCTransitionSceneContainerLayer(CCScene inScene, CCScene outScene) 
-            : base(new CCCamera(CCCameraProjection.Projection3D, outScene.GameView.DesignResolution))
+            : base(new CCCamera(CCCameraProjection.Projection3D, outScene.VisibleBoundsScreenspace.Size))
         {
-            CCSize contentSize = outScene.GameView.DesignResolution;
+            CCSize contentSize = outScene.VisibleBoundsScreenspace.Size; //or Scene.DefaultDesignResolutionSize?
 
             AnchorPoint = new CCPoint(0.5f, 0.5f);
 
@@ -126,7 +126,7 @@ namespace CocosSharp
 
         #region Constructors
 
-        public CCTransitionScene (float duration, CCScene scene) : base(scene.GameView)
+        public CCTransitionScene (float duration, CCScene scene) : base(scene.Window, scene.Viewport)
         {
             InitCCTransitionScene(duration, scene);
         }
@@ -143,7 +143,7 @@ namespace CocosSharp
             if (outScene == null)
             {
                 // Creating an empty scene.
-                outScene = new CCScene(GameView);
+                outScene = new CCScene(Window, Viewport, Director);
             }
 
             Debug.Assert(InScene != outScene, "Incoming scene must be different from the outgoing scene");

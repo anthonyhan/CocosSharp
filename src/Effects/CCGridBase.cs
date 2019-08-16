@@ -113,7 +113,7 @@ namespace CocosSharp
         {
             if(RenderTexture != null) 
             {
-                CCDrawManager drawManager = Scene.GameView.DrawManager;
+                CCDrawManager drawManager = Scene.Window.DrawManager;
                 drawManager.BindTexture(RenderTexture.Texture);
             }
         }

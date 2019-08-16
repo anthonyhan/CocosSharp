@@ -562,7 +562,7 @@ namespace CocosSharp
 
             Stats.UpdateStart();
 
-            SoundEffectInstancePool.Update();
+            //SoundEffectInstancePool.Update();
 
             if (Director.NextScene != null)
                 Director.SetNextScene();

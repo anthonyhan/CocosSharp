@@ -40,7 +40,7 @@ namespace CocosSharp
         #region Properties
 
         public bool IsEnabled { get; set; }
-        public CCGameView GameView { get; private set; }
+        public CCWindow Window { get; set; }
 
         // Sets the dirty flag for a node.
         protected internal CCNode MarkDirty
@@ -60,9 +60,9 @@ namespace CocosSharp
 
         #region Constructors
 
-        public CCEventDispatcher(CCGameView gameView)
+        public CCEventDispatcher(CCWindow window)
         {
-            GameView = gameView;
+            Window = window;
 
             toBeAddedListeners = new List<CCEventListener>(50);
 
@@ -950,7 +950,7 @@ namespace CocosSharp
             if (sceneGraphListeners == null)
                 return;
 
-            var rootNode = GameView.Director.RunningScene;
+            var rootNode = Window.DefaultDirector.RunningScene;
             // Reset priority index
             nodePriorityIndex = 0;
             nodePriorityMap.Clear();

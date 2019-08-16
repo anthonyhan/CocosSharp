@@ -214,7 +214,7 @@ namespace CocosSharp
             }
         }
 
-        internal void Draw (CCGameView gameView)
+        internal void Draw (CCWindow window)
         {
             if (isEnabled) {
                 totalFrames++;
@@ -236,7 +236,7 @@ namespace CocosSharp
                         fpsLabel.Text =        String.Format ("             {0:0} FPS", fps);
                         updateTimeLabel.Text = String.Format ("Update time: {0:0.000} ms", upd);
                         drawTimeLabel.Text =   String.Format ("Draw time:   {0:0.000} ms", drw);
-                        drawCallLabel.Text =   String.Format ("Drawcalls:   {0}", gameView.DrawManager.DrawCount);
+                        drawCallLabel.Text =   String.Format ("Drawcalls:   {0}", window.DrawManager.DrawCount);
                         memoryLabel.Text =     String.Format ("Memory:      {0} B ({1} kB)", mem, mem / 1024);
                         gcLabel.Text =         String.Format ("Garbage:     #{0}", gcCounter);
 
@@ -248,7 +248,7 @@ namespace CocosSharp
                         fpsLabel.Color = fps < 30 ? warnColor : whiteColor;
                     }
 
-                    var scene = gameView.Director.RunningScene;
+                    var scene = window.DefaultDirector.RunningScene;
                     drawCallLabel.Scene = scene;
                     fpsLabel.Scene = scene;
                     updateTimeLabel.Scene = scene;

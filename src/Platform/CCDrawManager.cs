@@ -61,6 +61,10 @@ namespace CocosSharp
         int stackIndex;
         int maskLayer = -1;
 
+        CCDisplayOrientation currentDisplayOrientation;
+
+        CCSize initialProposedScreenSizeInPixels;
+
         CCBlendFunc currBlend;
         CCDepthFormat platformDepthFormat;
 
@@ -97,6 +101,8 @@ namespace CocosSharp
 
         GraphicsDevice graphicsDevice;
 
+        GraphicsDeviceManager graphicsDeviceMgr;
+
         List<RasterizerState> rasterizerStatesCache;
 
 
@@ -106,8 +112,8 @@ namespace CocosSharp
 
         public SpriteBatch SpriteBatch { get; set; }
 
-        internal ulong DrawCount { get; set; }
-        internal ulong DrawPrimitivesCount { get; set; }
+        internal long DrawCount { get; set; }
+        internal long DrawPrimitivesCount { get; set; }
 
         internal BasicEffect PrimitiveEffect { get; private set; }
         internal AlphaTestEffect AlphaTestEffect { get; private set; }
@@ -162,6 +168,30 @@ namespace CocosSharp
                 graphicsDevice.DepthStencilState = value ? depthEnableStencilState : depthDisableStencilState;
             }
         }
+
+        internal CCDisplayOrientation SupportedDisplayOrientations
+        {
+            get { return (CCDisplayOrientation)graphicsDeviceMgr.SupportedOrientations; }
+            set
+            {
+                graphicsDeviceMgr.SupportedOrientations = (DisplayOrientation)value;
+                graphicsDeviceMgr.ApplyChanges();
+                UpdateDisplayOrientation();
+            }
+        }
+
+        internal CCDisplayOrientation CurrentDisplayOrientation
+        {
+            set
+            {
+                if (currentDisplayOrientation != value)
+                {
+                    currentDisplayOrientation = value;
+                    UpdateDisplayOrientation();
+                }
+            }
+        }
+
 
         internal BlendState BlendState
         {
@@ -235,6 +265,11 @@ namespace CocosSharp
             get { return graphicsDevice; }
         }
 
+        internal GraphicsDeviceManager XnaGraphicsDeviceManager
+        {
+            get { return graphicsDeviceMgr; }
+        }
+
         internal RenderTarget2D CurrentRenderTarget 
         { 
             get { return currentRenderTarget; }
@@ -255,9 +290,11 @@ namespace CocosSharp
 
         #region Initialization
 
-        internal CCDrawManager(GraphicsDevice device)
+        internal CCDrawManager(GraphicsDeviceManager deviceManager, CCSize proposedScreenSize, CCDisplayOrientation supportedOrientations)
         {
             Renderer = new CCRenderer(this);
+
+            graphicsDeviceMgr = deviceManager;
 
             depthTest = true;
             allowNonPower2Textures = true;
@@ -277,7 +314,17 @@ namespace CocosSharp
         
             hasStencilBuffer = true;
 
-            graphicsDevice = device;
+            if (deviceManager.GraphicsDevice == null)
+            {
+                initialProposedScreenSizeInPixels = proposedScreenSize;
+                graphicsDeviceMgr.PreferredBackBufferWidth = (int)initialProposedScreenSizeInPixels.Width;
+                graphicsDeviceMgr.PreferredBackBufferHeight = (int)initialProposedScreenSizeInPixels.Height;
+                graphicsDeviceMgr.SupportedOrientations = (DisplayOrientation)supportedOrientations;
+                graphicsDeviceMgr.DeviceCreated += GraphicsDeviceCreated;
+                graphicsDeviceMgr.PreparingDeviceSettings += PreparingDeviceSettings;
+            }
+
+            graphicsDevice = deviceManager.GraphicsDevice;
             InitializeGraphicsDevice();
         }
 
@@ -302,6 +349,12 @@ namespace CocosSharp
             }
         }
 
+        void GraphicsDeviceCreated(object sender, EventArgs e)
+        {
+            graphicsDevice = graphicsDeviceMgr.GraphicsDevice;
+            InitializeGraphicsDevice();
+        }
+
         void PreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
             var gdipp = e.GraphicsDeviceInformation.PresentationParameters;
@@ -317,6 +370,9 @@ namespace CocosSharp
             gdipp.DepthStencilFormat = presParams.DepthStencilFormat;
             gdipp.BackBufferFormat = presParams.BackBufferFormat;
             gdipp.RenderTargetUsage = presParams.RenderTargetUsage;
+
+            gdipp.BackBufferWidth = (int)initialProposedScreenSizeInPixels.Width;
+            gdipp.BackBufferHeight = (int)initialProposedScreenSizeInPixels.Height;
         }
 
         void InitializeGraphicsDevice()
@@ -387,6 +443,20 @@ namespace CocosSharp
         }
 
         #endregion Initialization
+
+        #region Updating view
+
+        void UpdateDisplayOrientation()
+        {
+            // Make sure chosen orientation is supported
+            if ((currentDisplayOrientation & SupportedDisplayOrientations) != currentDisplayOrientation)
+            {
+                currentDisplayOrientation = CCDisplayOrientation.Default;
+            }
+            //ResetDevice();
+        }
+
+        #endregion Updating view
 
 
         RasterizerState GetScissorRasterizerState(bool scissorEnabled)

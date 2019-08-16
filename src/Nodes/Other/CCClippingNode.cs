@@ -102,7 +102,7 @@ namespace CocosSharp
                 return;
             }
 
-            if (DrawManager.BeginDrawMask(new CCRect(Viewport.Bounds), Inverted, AlphaThreshold))
+            if (DrawManager.BeginDrawMask(Viewport.ViewportInPixels, Inverted, AlphaThreshold))
             {
                 DrawManager.PushMatrix();;
 
