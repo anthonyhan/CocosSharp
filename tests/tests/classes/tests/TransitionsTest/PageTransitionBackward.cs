@@ -10,12 +10,12 @@ namespace tests
     {
         public PageTransitionBackward (float t, CCScene s) : base (t, s, true)
         {
-            GameView.DepthTesting = true;
+            Window.IsUseDepthTesting = true;
         }
 
         public override void OnExit()
         {
-            GameView.DepthTesting = true;
+            Window.IsUseDepthTesting = true;
 
             base.OnExit();
         }

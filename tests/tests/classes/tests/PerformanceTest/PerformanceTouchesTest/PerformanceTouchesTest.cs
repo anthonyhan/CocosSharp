@@ -20,7 +20,7 @@ namespace tests
 
             pScene.AddChild(pLayer);
 
-            AppDelegate.SharedWindow.Director.ReplaceScene(pScene);
+            AppDelegate.SharedWindow.DefaultDirector.ReplaceScene(pScene);
         }
     }
 }

@@ -678,13 +678,13 @@ namespace tests
             tileMap.Camera.NearAndFarOrthographicZClipping 
                 = new CCNearAndFarClipping(-2000f, 2000f);
 
-            GameView.DepthTesting = true;
+            Window.IsUseDepthTesting = true;
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            GameView.DepthTesting = false;
+            Window.IsUseDepthTesting = false;
         }
 
         #endregion Setup content
@@ -737,13 +737,13 @@ namespace tests
             tileMap.Camera.NearAndFarOrthographicZClipping 
             = new CCNearAndFarClipping(-2000f, 2000f);
 
-            GameView.DepthTesting = true;
+            Window.IsUseDepthTesting = true;
         }
 
         public override void OnExit()
         {
             base.OnExit();
-            GameView.DepthTesting = false;
+            Window.IsUseDepthTesting = false;
         }
 
         #endregion Setup content

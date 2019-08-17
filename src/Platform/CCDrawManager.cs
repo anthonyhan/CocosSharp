@@ -325,7 +325,6 @@ namespace CocosSharp
             }
 
             graphicsDevice = deviceManager.GraphicsDevice;
-            InitializeGraphicsDevice();
         }
 
         void InitializeRawQuadBuffers()

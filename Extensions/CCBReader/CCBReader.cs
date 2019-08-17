@@ -186,7 +186,7 @@ namespace CocosSharp
 
         private static readonly UTF8Encoding utf8Encoder = new UTF8Encoding(false);
 
-        public CCGameView GameView { get; set; }
+        public CCWindow Window { get; set; }
         public CCCamera Camera { get; set; }
         public CCLayer Layer { get; set; }
         public CCDirector Director { get; set; }
@@ -405,7 +405,7 @@ namespace CocosSharp
         public CCScene CreateSceneWithNodeGraphFromFile(string fileName, object owner, CCSize parentSize)
         {
             CCNode pNode = ReadNodeGraphFromFile(fileName, owner, parentSize);
-            CCScene pScene = new CCScene(GameView);
+            CCScene pScene = new CCScene(Window);
             pScene.AddChild(pNode);
 
             return pScene;

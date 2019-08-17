@@ -9,7 +9,7 @@ namespace tests
         {
             base.OnEnter();
 
-            GameView.DepthTesting = true;
+            Window.IsUseDepthTesting = true;
 
             CCRect visibleBounds = VisibleBoundsWorldspace;
 

@@ -54,7 +54,7 @@ namespace tests
         {
             Unschedule(unpause);
             CCNode node = GetChildByTag(kTagGrossini);
-            GameView.ActionManager.ResumeTarget(node);
+            Application.ActionManager.ResumeTarget(node);
         }
     }
 }

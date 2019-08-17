@@ -303,8 +303,8 @@ namespace tests
 			var listener = new CCEventListenerAccelerometer();
 
             #if !MACOS
-            if (!GameView.Accelerometer.Enabled)
-                GameView.Accelerometer.Enabled = true;
+            if (!Window.Accelerometer.Enabled)
+                Window.Accelerometer.Enabled = true;
             #endif
 
 			// We will use Lambda expressions to attach the event process

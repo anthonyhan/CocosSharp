@@ -743,7 +743,7 @@ namespace CocosSharp
 #if !IOS
             if (HandleMediaStateAutomatically)
             {
-                CCAudioEngine.SharedEngine.SaveMediaState();
+                CocosDenshion.CCSimpleAudioEngine.SharedEngine.SaveMediaState();
             }
 #endif
 
@@ -759,7 +759,7 @@ namespace CocosSharp
 #if !IOS
             if (HandleMediaStateAutomatically)
             {
-                CCAudioEngine.SharedEngine.RestoreMediaState();
+                CocosDenshion.CCSimpleAudioEngine.SharedEngine.RestoreMediaState();
             }
 #endif
         }

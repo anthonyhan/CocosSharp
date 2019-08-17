@@ -7,7 +7,7 @@ using CocosSharp;
 
 namespace tests
 {
-    public class AccelerometerTest : CCLayer
+    public class AccelerometerTest : TestNavigationLayer
     {
         CCLabel titleLabel;
         CCLabel subtitleLabel;
@@ -70,7 +70,7 @@ namespace tests
 
             ball.Position = windowSize.Center;
 
-            GameView.Accelerometer.Enabled = true;
+            Window.Accelerometer.Enabled = true;
 
             // Register Touch Event
             var accelListener = new CCEventListenerAccelerometer();
