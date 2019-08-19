@@ -761,7 +761,8 @@ namespace CocosSharp
         public virtual CCWindow Window
         {
             get { return Scene != null ? Scene.Window : null; }
-            set { Scene.Window = value; }
+            //set { Scene.Window = value; }
+            set { }
         }
 
         public virtual CCApplication Application

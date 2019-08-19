@@ -333,8 +333,21 @@ namespace CocosSharp
         // Instance properties
         public bool HandleMediaStateAutomatically { get; set; }
         public CCDisplayOrientation CurrentOrientation { get; private set; }
+        public CCAudioEngine AudioEngine { get; private set; }
         public CCActionManager ActionManager { get; private set; }
         public CCScheduler Scheduler { get; private set; }
+
+
+        //Caches
+        public CCContentManager ContentManager { get; private set; }
+        internal CCFontAtlasCache FontAtlasCache { get; private set; }
+        public CCSpriteFontCache SpriteFontCache { get; private set; }
+        public CCSpriteFrameCache SpriteFrameCache { get; private set; }
+        public CCParticleSystemCache ParticleSystemCache { get; private set; }
+        public CCTextureCache TextureCache { get; private set; }
+        public CCAnimationCache AnimationCache { get; private set; }
+
+
 
         public CCApplicationDelegate ApplicationDelegate
         {
@@ -494,9 +507,16 @@ namespace CocosSharp
             GameTime = new CCGameTime();
             xnaGame = game;
 
+            //PlatformInitialise();
+
+            AudioEngine = new CCAudioEngine();
             Scheduler = new CCScheduler();
             ActionManager = new CCActionManager();
-            Scheduler.Schedule(ActionManager, CCSchedulePriority.System, false);
+
+            // Latest instance of game view should be setting shared resources
+            // Ideally, we should move towards removing these singletons altogetehr
+            CCAudioEngine.SharedEngine = AudioEngine;
+            CCScheduler.SharedScheduler = Scheduler;
 
             priorGamePadState = new Dictionary<PlayerIndex, GamePadState>();
             gamePadConnection = new CCEventGamePadConnection();
@@ -505,21 +525,11 @@ namespace CocosSharp
             gamePadStick = new CCEventGamePadStick();
             gamePadTrigger = new CCEventGamePadTrigger();
 
-            IGraphicsDeviceService service = (IGraphicsDeviceService)Game.Services.GetService(typeof(IGraphicsDeviceService));
+            gameWindows = new List<CCWindow>();
 
-            if (service == null)
-            {
-                service = new GraphicsDeviceManager(game);
+            InitialiseGraphicsDevice(isFullScreen, mainWindowSizeInPixels);
 
-                // if we still do not have a service after creating the GraphicsDeviceManager
-                // we need to stop somewhere and issue a warning.
-                if (Game.Services.GetService(typeof(IGraphicsDeviceService)) == null)
-                {
-                    Game.Services.AddService(typeof(IGraphicsDeviceService), service);
-                }
-            }
-
-            xnaDeviceManager = (GraphicsDeviceManager)service;
+            InitialiseResourceCaches();
 
             Content = game.Content;
             HandleMediaStateAutomatically = true;
@@ -535,7 +545,31 @@ namespace CocosSharp
 
             game.Components.Add(this);
 
-            gameWindows = new List<CCWindow>();
+
+
+        }
+
+        #endregion Constructors
+
+        #region Initialization
+
+        void InitialiseGraphicsDevice(bool isFullScreen, CCSize? mainWindowSizeInPixels=null)
+        {
+            IGraphicsDeviceService service = (IGraphicsDeviceService)Game.Services.GetService(typeof(IGraphicsDeviceService));
+
+            if (service == null)
+            {
+                service = new GraphicsDeviceManager(xnaGame);
+
+                // if we still do not have a service after creating the GraphicsDeviceManager
+                // we need to stop somewhere and issue a warning.
+                if (Game.Services.GetService(typeof(IGraphicsDeviceService)) == null)
+                {
+                    Game.Services.AddService(typeof(IGraphicsDeviceService), service);
+                }
+            }
+
+            xnaDeviceManager = (GraphicsDeviceManager)service;
 
             // Setting up the window correctly requires knowledge of the phone app page which needs to be set first
 #if !WINDOWS_PHONE
@@ -543,7 +577,32 @@ namespace CocosSharp
 #endif
         }
 
-        #endregion Constructors
+        void InitialiseResourceCaches()
+        {
+            ContentManager = new CCContentManager(new GameServiceContainer());
+            FontAtlasCache = new CCFontAtlasCache();
+            SpriteFontCache = new CCSpriteFontCache(ContentManager);
+            SpriteFrameCache = new CCSpriteFrameCache();
+            TextureCache = new CCTextureCache(Scheduler);
+            ParticleSystemCache = new CCParticleSystemCache(Scheduler);
+            AnimationCache = new CCAnimationCache();
+
+            // Link new caches to singleton instances
+            // For now, this is required because a layer's resources (e.g. sprite)
+            // may be loaded prior to a gameview being associated with that layer
+            CCContentManager.SharedContentManager = ContentManager;
+            CCFontAtlasCache.SharedFontAtlasCache = FontAtlasCache;
+            CCSpriteFontCache.SharedSpriteFontCache = SpriteFontCache;
+            CCSpriteFrameCache.SharedSpriteFrameCache = SpriteFrameCache;
+            CCTextureCache.SharedTextureCache = TextureCache;
+            CCParticleSystemCache.SharedParticleSystemCache = ParticleSystemCache;
+            CCAnimationCache.SharedAnimationCache = AnimationCache;
+
+            var serviceProvider = ContentManager.ServiceProvider as GameServiceContainer;
+            serviceProvider.AddService(typeof(IGraphicsDeviceService), xnaDeviceManager);
+        }
+
+        #endregion Initialization
 
 
         #region Game window management
@@ -786,7 +845,7 @@ namespace CocosSharp
         {
             if (!initialized)
             {
-                CCContentManager.Initialize(Game.Content.ServiceProvider, Game.Content.RootDirectory);
+                //CCContentManager.Initialize(Game.Content.ServiceProvider, Game.Content.RootDirectory);
 
                 base.LoadContent();
 
@@ -850,6 +909,7 @@ namespace CocosSharp
                     }
 
                     Scheduler.Update(deltaTime);
+                    ActionManager.Update(deltaTime);
 
                     window.Update(deltaTime);
                 }
@@ -1209,8 +1269,11 @@ namespace CocosSharp
             pos = new CCPoint(priorMouseState.X, priorMouseState.Y);
 #endif
 
-
+#if WINDOWS || WINDOWSGL || MACOS
             var mouseEvent = new CCEventMouse(CCMouseEventType.MOUSE_MOVE, lastMouseId,  pos, GameTime.ElapsedGameTime);
+#else
+            var mouseEvent = new CCEventMouse(CCMouseEventType.MOUSE_MOVE, 0,  pos, GameTime.ElapsedGameTime);
+#endif
             //mouseEvent.CursorX = pos.X;
             //mouseEvent.CursorY = pos.Y;
 
@@ -1289,7 +1352,7 @@ namespace CocosSharp
             priorMouseState = currentMouseState;
         }
 
-        #endregion Mouse support
+#endregion Mouse support
 
 
         CCPoint TransformPoint(float x, float y)

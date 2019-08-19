@@ -162,8 +162,8 @@ namespace CocosSharp
 
             // Make sure we initialize the Cache's so that the correct Scheduler is used.
             // This needs to be looked at further for multiple windows.
-            new CCTextureCache(application.Scheduler);
-            new CCParticleSystemCache(application.Scheduler);
+            //new CCTextureCache(application.Scheduler);
+            //new CCParticleSystemCache(application.Scheduler);
 
             Stats.Initialise();
 
