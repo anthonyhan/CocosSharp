@@ -40,6 +40,8 @@ namespace tests
 
         public TestController()
         {
+            //var layer = new CCLayerColor(CCColor4B.Blue);
+            //AddChild(layer);
             // Add close menu
             closeMenuItem = new CCMenuItemImage(TestResource.s_pPathClose, TestResource.s_pPathClose, CloseCallback);
             closeMenu = new CCMenu(closeMenuItem);

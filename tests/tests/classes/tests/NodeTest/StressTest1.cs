@@ -46,8 +46,8 @@ namespace tests
 
         private void removeMe(CCNode node)
         {
-            Parent.RemoveChild(node, true);
             NextCallback(this);
+            Parent.RemoveChild(node, true);
         }
 
         public override string title()

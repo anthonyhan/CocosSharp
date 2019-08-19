@@ -9,7 +9,6 @@
     <Import_RootNamespace>CocosSharp.TestForms</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)tests\AccelerometerTest\AccelerometerTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tests\ActionManagerTest\ActionManagerTest.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tests\ActionManagerTest\ActionManagerTestScene.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)tests\ActionManagerTest\CrashTest.cs" />

@@ -22,11 +22,31 @@ namespace tests
 
         public override void ApplicationDidFinishLaunching(CCApplication application, CCWindow mainWindow)
         {
+            //application.AllowUserResizing = true;
+            application.PreferMultiSampling = true;
             application.ContentRootDirectory = "Content";
+
+            application.ContentSearchResolutionOrder = new List<string>() { "", "images", "fonts" };
+
             var windowSize = mainWindow.WindowSizeInPixels;
+            SharedWindow = mainWindow;
 
             var desiredWidth = 1024.0f;
             var desiredHeight = 768.0f;
+
+            //CCSpriteFontCache.FontScale = 0.6f;
+            application.SpriteFontCache.RegisterFont("arial", 12, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 38, 50, 64);
+            application.SpriteFontCache.RegisterFont("MarkerFelt", 16, 18, 22, 32);
+            application.SpriteFontCache.RegisterFont("MarkerFelt-Thin", 12, 18);
+            application.SpriteFontCache.RegisterFont("Paint Boy", 26);
+            application.SpriteFontCache.RegisterFont("Schwarzwald Regular", 26);
+            application.SpriteFontCache.RegisterFont("Scissor Cuts", 26);
+            application.SpriteFontCache.RegisterFont("A Damn Mess", 26);
+            application.SpriteFontCache.RegisterFont("Abberancy", 26);
+            application.SpriteFontCache.RegisterFont("Abduction", 26);
+
+            mainWindow.DisplayStats = true;
+            mainWindow.StatsScale = 1;
 
             // This will set the world bounds to be (0,0, w, h)
             // CCSceneResolutionPolicy.ShowAll will ensure that the aspect ratio is preserved
@@ -49,6 +69,7 @@ namespace tests
             mainWindow.DisplayStats = true;
             var scene = new CCScene(mainWindow);
             var introLayer = new TestController();
+            //var introLayer = new TestingLayer();
 
             scene.AddChild(introLayer);
 

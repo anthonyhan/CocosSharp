@@ -120,48 +120,54 @@ namespace tests
 #if OUYA
     [IntentFilter(new[] { Intent.ActionMain }, Categories = new[] { Intent.CategoryLauncher, "ouya.intent.category.GAME" })]
 #endif
-    public class Activity1 : Activity
+    public class Activity1 : AndroidGameActivity
     {
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
 
-            // Set our view from the "main" layout resource
-            SetContentView(Resource.Layout.Main);
+            CCApplication application = new CCApplication(false, new CCSize(1024f, 768f));
+            SetContentView((View)application.Game.Services.GetService(typeof(View)));
+            application.ApplicationDelegate = new AppDelegate();
 
-            var gameView = (CCGameView)FindViewById(Resource.Id.MyGameView);
-            gameView.ViewCreated += LoadGame;
+            application.StartGame();
 
-            AppDelegate.SharedWindow = gameView;
+            //// Set our view from the "main" layout resource
+            //SetContentView(Resource.Layout.Main);
+
+            //var gameView = (CCGameView)FindViewById(Resource.Id.MyGameView);
+            //gameView.ViewCreated += LoadGame;
+
+            //AppDelegate.SharedWindow = gameView;
 
         }
 
-        void LoadGame(object sender, EventArgs e)
-        {
-            CCGameView gameView = sender as CCGameView;
+        //void LoadGame(object sender, EventArgs e)
+        //{
+        //    //CCGameView gameView = sender as CCGameView;
 
-            if (gameView != null) 
-            {
-                CCSpriteFontCache sharedCache = gameView.SpriteFontCache;
-                sharedCache.RegisterFont("arial", 12, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 38, 50, 64);
-                sharedCache.RegisterFont("MarkerFelt", 16, 18, 22, 32);
-                sharedCache.RegisterFont("MarkerFelt-Thin", 12, 18);
-                sharedCache.RegisterFont("Paint Boy", 26);
-                sharedCache.RegisterFont("Schwarzwald Regular", 26);
-                sharedCache.RegisterFont("Scissor Cuts", 26);
-                sharedCache.RegisterFont("A Damn Mess", 26);
-                sharedCache.RegisterFont("Abberancy", 26);
-                sharedCache.RegisterFont("Abduction", 26);
+        //    if (gameView != null) 
+        //    {
+        //        CCSpriteFontCache sharedCache = gameView.SpriteFontCache;
+        //        sharedCache.RegisterFont("arial", 12, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 38, 50, 64);
+        //        sharedCache.RegisterFont("MarkerFelt", 16, 18, 22, 32);
+        //        sharedCache.RegisterFont("MarkerFelt-Thin", 12, 18);
+        //        sharedCache.RegisterFont("Paint Boy", 26);
+        //        sharedCache.RegisterFont("Schwarzwald Regular", 26);
+        //        sharedCache.RegisterFont("Scissor Cuts", 26);
+        //        sharedCache.RegisterFont("A Damn Mess", 26);
+        //        sharedCache.RegisterFont("Abberancy", 26);
+        //        sharedCache.RegisterFont("Abduction", 26);
 
-                gameView.ContentManager.SearchPaths = new List<string>() { "", "images", "fonts" };
+        //        gameView.ContentManager.SearchPaths = new List<string>() { "", "images", "fonts" };
 
-                gameView.DesignResolution = new CCSizeI (1024, 768);
-                gameView.Stats.Enabled = true;
-                CCScene gameScene = new CCScene (gameView);
-                gameScene.AddLayer(new TestController());
-                gameView.RunWithScene (gameScene);
-            }
-        }
+        //        gameView.DesignResolution = new CCSizeI (1024, 768);
+        //        gameView.Stats.Enabled = true;
+        //        CCScene gameScene = new CCScene (gameView);
+        //        gameScene.AddLayer(new TestController());
+        //        gameView.RunWithScene (gameScene);
+        //    }
+        //}
     }
 #endif
 

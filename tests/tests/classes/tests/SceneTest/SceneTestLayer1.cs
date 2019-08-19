@@ -50,7 +50,7 @@ namespace tests
 		public override void OnExit()
 		{
 			base.OnExit();
-			CCLog.Log("SceneTestLayer1#OnExit - Can Pop Scene = {0} - {1}", Director.CanPopScene, Director.SceneCount);
+			//CCLog.Log("SceneTestLayer1#OnExit - Can Pop Scene = {0} - {1}", Director.CanPopScene, Director.SceneCount);
 		}
 
 

@@ -77,7 +77,7 @@ namespace tests.Extensions
 
         public static CCScene SceneWithTitle(string title)
         {
-            CCScene pScene = null; //new CCScene();
+            CCScene pScene = new CCScene(AppDelegate.SharedWindow);
             var controlLayer = new CCControlColourPickerTest();
             if (controlLayer != null)
             {
