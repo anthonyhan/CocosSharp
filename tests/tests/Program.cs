@@ -94,7 +94,7 @@ namespace tests
 
 #if ANDROID
     [Activity(
-    Label = "CocosSharp Tests",
+    Label = "Tests",
     AlwaysRetainTaskState = true,
     Icon = "@drawable/Icon",
     Theme = "@style/Theme.NoTitleBar",
@@ -112,7 +112,7 @@ namespace tests
         {
             base.OnCreate(bundle);
 
-            CCApplication application = new CCApplication(false, new CCSize(1920f,1080f));
+            CCApplication application = new CCApplication();
             SetContentView((View)application.Game.Services.GetService(typeof(View)));
             application.ApplicationDelegate = new AppDelegate();
 
