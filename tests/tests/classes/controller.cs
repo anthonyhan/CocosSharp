@@ -352,7 +352,7 @@ namespace tests
         public static Dictionary<string, Func<TestScene>> testCases = new Dictionary<string, Func<TestScene>> 
             {
 
-            #if !MACOS
+            #if !WINDOWSGL && !MACOS && !LINUX
             {"Accelerometer", () => new AccelerometerTestScene()}, 
             #endif
             {"ActionManagerTest", () => new ActionManagerTestScene()},

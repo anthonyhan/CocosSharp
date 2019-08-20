@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
@@ -9,7 +10,7 @@
     <Description>CocosSharp</Description>
     <RootNamespace>CocosSharp</RootNamespace>
     <SynchReleaseVersion>False</SynchReleaseVersion>
-    <MtouchSdkVersion>3.0</MtouchSdkVersion>
+    <MonoGamePlatform>iOS</MonoGamePlatform>
     <AssemblyName>CocosSharp</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
@@ -70,12 +71,15 @@
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenTK-1.0" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="Xamarin.iOS" />
-    <Reference Include="OpenTK-1.0" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\iOS\MonoGame.Framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <!--Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" Condition="'$(windir)' != '' " /-->
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
@@ -93,6 +97,7 @@
   </ProjectExtensions>
   <ItemGroup>
     <Compile Include="Actions\CCActionManager.cs" />
+    <Compile Include="Platform\CCApplication.cs" />
     <Compile Include="Platform\CCContentManager.cs" />
     <Compile Include="Platform\CCAccelerometer.cs" />
     <Compile Include="Platform\CCDevice.cs" />
@@ -101,6 +106,8 @@
     <Compile Include="Platform\CCLog.cs" />
     <Compile Include="Platform\CCSpriteFontCache.cs" />
     <Compile Include="Platform\CCSAXParser.cs" />
+    <Compile Include="Platform\CCViewport.cs" />
+    <Compile Include="Platform\CCWindow.cs" />
     <Compile Include="Platform\ICCSAXDelegator.cs" />
     <Compile Include="Platform\PList\PlistArray.cs" />
     <Compile Include="Platform\PList\PlistBoolean.cs" />
@@ -140,9 +147,6 @@
     <Compile Include="Renderer\RenderCommands\CCCustomCommand.cs" />
     <Compile Include="Renderer\RenderCommands\CCQuadCommand.cs" />
     <Compile Include="Renderer\RenderCommands\CCRenderCommand.cs" />
-    <Compile Include="EmbeddableView\CCGameView.Mobile.cs" />
-    <Compile Include="EmbeddableView\CCGameView.cs" />
-    <Compile Include="EmbeddableView\CCGameView.iOS.cs" />
     <Compile Include="Platform\Keyboard\IOS\IMEKeyboardImpl.cs" />
     <Compile Include="Nodes\CCNode.cs" />
     <Compile Include="Audio\CCEffectPlayer.cs" />
@@ -400,27 +404,12 @@
     <ProjectReference Include="..\box2d\box2d.iOS.csproj">
       <Project>{7877D4F9-F781-465A-9C1F-D113F246A994}</Project>
       <Name>box2d.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.iOS.csproj">
-      <Project>{734EAA48-F1CA-481A-B391-0285BC0E8B40}</Project>
-      <Name>Lidgren.Network.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
-      <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
-      <Name>MonoGame.Framework.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.Net.iOS.csproj">
-      <Project>{D4838656-8545-4DC5-8822-D4AD313E17AC}</Project>
-      <Name>MonoGame.Framework.Net.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup />
-  <ItemGroup>
-    <Folder Include="EmbeddableView\" />
-    <Folder Include="Nodes\Parallax\" />
-    <Folder Include="Nodes\Layers\" />
-    <Folder Include="Camera\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup />
 </Project>

@@ -1,5 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <ProjectGuid>{4EF34363-1190-4444-9F4B-7A262B397EE8}</ProjectGuid>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -8,22 +9,8 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>tests</RootNamespace>
     <MonoGamePlatform>iOS</MonoGamePlatform>
-    <PublishUrl>publish\</PublishUrl>
-    <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
-    <UpdateMode>Foreground</UpdateMode>
-    <UpdateInterval>7</UpdateInterval>
-    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
-    <UpdatePeriodically>false</UpdatePeriodically>
-    <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <UseApplicationTrust>false</UseApplicationTrust>
-    <BootstrapperEnabled>true</BootstrapperEnabled>
     <AssemblyName>CocosSharpTests</AssemblyName>
+    <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|iPhoneSimulator' ">
     <DebugSymbols>True</DebugSymbols>
@@ -45,7 +32,6 @@
     <MtouchI18n>
     </MtouchI18n>
     <MtouchArch>i386, x86_64</MtouchArch>
-    <MtouchExtraArgs>--linkskip=MonoGame.Framework</MtouchExtraArgs>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhoneSimulator' ">
     <DebugType>none</DebugType>
@@ -76,7 +62,20 @@
     <MtouchArch>ARMv7, ARM64</MtouchArch>
     <CrashReportingApiKey>
     </CrashReportingApiKey>
-    <MtouchLink>None</MtouchLink>
+    <MtouchLink>SdkOnly</MtouchLink>
+    <MtouchFastDev>true</MtouchFastDev>
+    <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+    <DeviceSpecificBuild>false</DeviceSpecificBuild>
+    <CodesignProvision>
+    </CodesignProvision>
+    <CodesignExtraArgs />
+    <CodesignResourceRules />
+    <CodesignEntitlements>
+    </CodesignEntitlements>
+    <MtouchNoSymbolStrip>false</MtouchNoSymbolStrip>
+    <MtouchFloat32>true</MtouchFloat32>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -90,8 +89,17 @@
     <MtouchUseLlvm>True</MtouchUseLlvm>
     <MtouchI18n>
     </MtouchI18n>
-    <MtouchArch>ARMv7, ARM64</MtouchArch>
-    <MtouchSdkVersion>3.0</MtouchSdkVersion>
+    <MtouchArch>ARMv7</MtouchArch>
+    <MtouchSdkVersion>
+    </MtouchSdkVersion>
+    <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
+    <MtouchUseThumb>true</MtouchUseThumb>
+    <MtouchFastDev>true</MtouchFastDev>
+    <MtouchEnableSGenConc>true</MtouchEnableSGenConc>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -100,6 +108,9 @@
     <Reference Include="Xamarin.iOS" />
     <Reference Include="OpenTK-1.0" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\iOS\MonoGame.Framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ball-hd.mask" />
@@ -238,17 +249,10 @@
     <Compile Include="..\..\Extensions\GUI\CCScrollView\CCTableViewCell.cs">
       <Link>Extensions\GUI\CCScrollView\CCTableViewCell.cs</Link>
     </Compile>
-    <Compile Include="GameViewController.cs" />
-    <Compile Include="GameViewController.designer.cs">
-      <DependentUpon>GameViewController.cs</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\Images\animationbuttonnormal.xnb" />
     <Content Include="Content\Images\animationbuttonpressed.xnb" />
-    <None Include="Info.iOS.plist">
-      <Link>Info.plist</Link>
-    </None>
     <Content Include="Content\hd\Images\Icon.xnb" />
     <Content Include="Content\hd\Images\arrows.xnb" />
     <Content Include="Content\hd\Images\arrowsBar.xnb" />
@@ -492,6 +496,7 @@
     <Content Include="..\iOSContent\Content\fonts\debuguncompressed.xnb">
       <Link>Content\fonts\debuguncompressed.xnb</Link>
     </Content>
+    <None Include="Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\animations\animations-2.plist.xnb" />
@@ -898,14 +903,14 @@
     <ProjectReference Include="..\..\box2d\box2d.iOS.csproj">
       <Project>{7877D4F9-F781-465A-9C1F-D113F246A994}</Project>
       <Name>box2d.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
     <ProjectReference Include="..\..\src\CocosSharp.iOS.csproj">
       <Project>{511B1B80-F539-4CEC-AB62-3652A9275E7E}</Project>
       <Name>CocosSharp.iOS</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\MonoGame\MonoGame.Framework\MonoGame.Framework.iOS.csproj">
-      <Project>{DB8508BB-9849-4CC2-BC0F-8EB5DACB3C47}</Project>
-      <Name>MonoGame.Framework.iOS</Name>
+      <IsAppExtension>false</IsAppExtension>
+      <IsWatchApp>false</IsWatchApp>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -947,9 +952,13 @@
     <BundleResource Include="Content\fonts\Marker Felt.xnb" />
     <BundleResource Include="Resources\Default-568h%402x.png" />
   </ItemGroup>
-  <ItemGroup />
-  <ItemGroup />
   <ItemGroup>
-    <InterfaceDefinition Include="TestsStoryboard.storyboard" />
+    <ImageAsset Include="Media.xcassets\AppIcons.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Media.xcassets\LaunchImages.launchimage\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
+  <ItemGroup />
 </Project>

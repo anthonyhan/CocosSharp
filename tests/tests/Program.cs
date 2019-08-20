@@ -28,29 +28,15 @@ namespace tests
 {
 #if IPHONE || IOS
 
-    [Register ("AppDelegate")]
-    internal class Program : UIApplicationDelegate 
+    [Register("AppDelegate")]
+    class Program : UIApplicationDelegate
     {
-        public override UIWindow Window {
-            get;
-            set;
-        }
-
-
-        public static UIStoryboard Storyboard = UIStoryboard.FromName ("TestsStoryboard", null);
-        public static UIViewController initialViewController;
-
-
-        public override bool FinishedLaunching(UIApplication application, NSDictionary launchOptions)
+        public override void FinishedLaunching(UIApplication app)
         {
-            Window = new UIWindow (UIScreen.MainScreen.Bounds);
+            CCApplication application = new CCApplication();
+            application.ApplicationDelegate = new AppDelegate();
 
-            initialViewController = Storyboard.InstantiateInitialViewController () as UIViewController;
-
-            Window.RootViewController = initialViewController;
-            Window.MakeKeyAndVisible ();
-
-            return true;
+            application.StartGame();
         }
 
         // This is the main entry point of the application.
@@ -59,7 +45,7 @@ namespace tests
 
             // if you want to use a different Application Delegate class from "AppDelegate"
             // you can specify it here.
-            UIApplication.Main (args, null, "AppDelegate");
+            UIApplication.Main(args, null, "AppDelegate");
         }
     }
 #endif
@@ -126,7 +112,7 @@ namespace tests
         {
             base.OnCreate(bundle);
 
-            CCApplication application = new CCApplication(false, new CCSize(1024f, 768f));
+            CCApplication application = new CCApplication();
             SetContentView((View)application.Game.Services.GetService(typeof(View)));
             application.ApplicationDelegate = new AppDelegate();
 
