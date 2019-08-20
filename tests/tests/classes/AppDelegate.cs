@@ -31,8 +31,8 @@ namespace tests
             var windowSize = mainWindow.WindowSizeInPixels;
             SharedWindow = mainWindow;
 
-            var desiredWidth = 1024.0f;
-            var desiredHeight = 768.0f;
+            var desiredWidth = 960.0f;
+            var desiredHeight = 640.0f;
 
             //CCSpriteFontCache.FontScale = 0.6f;
             application.SpriteFontCache.RegisterFont("arial", 12, 16, 18, 20, 22, 24, 26, 28, 30, 32, 34, 38, 50, 64);
