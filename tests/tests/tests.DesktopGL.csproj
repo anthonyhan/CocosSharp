@@ -450,7 +450,6 @@
     <Compile Include="classes\tests\ZwoptexTest\ZwoptexTestScene.cs" />
     <EmbeddedResource Include="ball-hd.mask" />
     <EmbeddedResource Include="grossini.mask" />
-    <Compile Include="Game1.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
