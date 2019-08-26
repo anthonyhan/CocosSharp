@@ -66,7 +66,6 @@ namespace tests
                 CCSprite.DefaultTexelToContentSizeRatio = 1.0f;
             }
 
-            mainWindow.DisplayStats = true;
             var scene = new CCScene(mainWindow);
             var introLayer = new TestController();
             //var introLayer = new TestingLayer();
