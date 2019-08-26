@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -13,31 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <ProductVersion>12.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\WindowsDX\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS;MONOGAME;WINDOWSDX</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1591</NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\WindowsDX\Release\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS;MONOGAME;WINDOWSDX</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <NoWarn>1591</NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
+    <MonoGamePlatform>Windows</MonoGamePlatform>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,36 +41,12 @@
     <NoWarn>1591</NoWarn>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugPhysics|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\DebugPhysics\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WINDOWS;MONOGAME;WINDOWSDX;USE_PHYSICS</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'DebugPhysics|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\PhysicsWindowsDX\Debug\</OutputPath>
     <DefineConstants>TRACE;DEBUG;WINDOWS;MONOGAME;USE_PHYSICS</DefineConstants>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-    <NoWarn>1591</NoWarn>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'ReleasePhysics|x86'">
-    <OutputPath>bin\PhysicsWindowsDX\Release\</OutputPath>
-    <DefineConstants>TRACE;WINDOWS;MONOGAME;WINDOWSDX;USE_PHYSICS</DefineConstants>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
@@ -117,30 +69,22 @@
     <Reference Include="BitMiracle.LibTiff.NET">
       <HintPath>external lib\BitMiracle.LibTiff.NET.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MonoGame\ThirdParty\Dependencies\SharpDX\Windows\SharpDX.dll</HintPath>
+    <Reference Include="SharpDX">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\SharpDX.dll</HintPath>
     </Reference>
-    <Reference Include="SharpDX.Direct2D1, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\MonoGame\ThirdParty\Dependencies\SharpDX\Windows\SharpDX.Direct2D1.dll</HintPath>
+    <Reference Include="SharpDX.Direct2D1">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\SharpDX.Direct2D1.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml" />
+    <Reference Include="MonoGame.Framework">
+      <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\Windows\MonoGame.Framework.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EmbeddableView\CCGameView.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="EmbeddableView\CCGameView.Desktop.cs" />
-    <Compile Include="EmbeddableView\CCGameView.DX.cs" />
     <Compile Include="Events\CCEvent.cs" />
     <Compile Include="Events\CCEventAccelerate.cs" />
     <Compile Include="Events\CCEventDispatcher.cs" />
@@ -178,7 +122,10 @@
     <Compile Include="physics\*.cs" Condition=" '$(Configuration)' == 'DebugPhysics' Or '$(Configuration)' == 'ReleasePhysics' " />
     <Compile Include="physics\chipmunk\*.cs" Condition=" '$(Configuration)' == 'DebugPhysics' Or '$(Configuration)' == 'ReleasePhysics' " />
     <Compile Include="physics\extensions\*.cs" Condition=" '$(Configuration)' == 'DebugPhysics' Or '$(Configuration)' == 'ReleasePhysics' " />
+    <Compile Include="Platform\CCApplication.cs" />
     <Compile Include="Platform\CCArrayPool.cs" />
+    <Compile Include="Platform\CCViewport.cs" />
+    <Compile Include="Platform\CCWindow.cs" />
     <Compile Include="Platform\Keyboard\Windows\IMEKeyboardImpl.cs" />
     <Compile Include="Renderer\CCRenderer.cs" />
     <Compile Include="Renderer\RenderCommands\CCCustomCommand.cs" />
@@ -444,25 +391,9 @@
     <Compile Include="Predefine\ICCUpdatable.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.Net.Windows.csproj">
-      <Project>{87a71215-7cac-4b80-9d43-1700decfb828}</Project>
-      <Name>MonoGame.Framework.Net.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoGame\MonoGame.Framework\MonoGame.Framework.Windows.csproj">
-      <Project>{7DE47032-A904-4C29-BD22-2D235E8D91BA}</Project>
-      <Name>MonoGame.Framework.Windows</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Windows.csproj">
-      <Project>{AE483C29-042E-4226-BA52-D247CE7676DA}</Project>
-      <Name>Lidgren.Network.Windows</Name>
-    </ProjectReference>
     <ProjectReference Include="..\box2d\box2d.WindowsDX.csproj">
       <Project>{B81B6701-7A78-4846-BF6F-04E0591F0F38}</Project>
       <Name>box2d.WindowsDX</Name>
-    </ProjectReference>
-    <ProjectReference Include="external lib\ChipmunkSharp\src\ChipmunkSharp\win32\ChipmunkSharp.Win32.csproj" Condition=" '$(Configuration)' == 'DebugPhysics' Or '$(Configuration)' == 'ReleasePhysics' ">
-      <Project>{fd50437f-b756-4bd8-99be-b723f6e1eb45}</Project>
-      <Name>ChipmunkSharp.Win32</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using SharpDX.Mathematics.Interop;
 
 
 
@@ -205,7 +206,7 @@ namespace CocosSharp
             }
         }
 
-        private static Color4 TransparentColor = new Color4(new Color3(1, 1.0f, 1.0f), 0.0f);
+        private static RawColor4 TransparentColor = new RawColor4(1f, 1f, 1f, 0f);
         internal CCTexture2D CreateTextSprite(string text, CCFontDefinition textDefinition)
         {
             if (string.IsNullOrEmpty(text))
@@ -232,7 +233,7 @@ namespace CocosSharp
             var _currentDIP = ConvertPointSizeToDIP(_currentFontSizeEm);
 
             // color
-            var foregroundColor = Color4.White;
+            var foregroundColor = new RawColor4(1f, 1f, 1f, 1f);
 
             // alignment
             var horizontalAlignment = textDef.Alignment;
@@ -278,8 +279,6 @@ namespace CocosSharp
 
             var textLayout = new TextLayout(FactoryDWrite, text, textFormat, dimensions.Width, dimensions.Height);
 
-            var boundingRect = new RectangleF();
-
             // Loop through all the lines so we can find our drawing offsets
             var textMetrics = textLayout.Metrics;
             var lineCount = textMetrics.LineCount;
@@ -289,20 +288,17 @@ namespace CocosSharp
                 return new CCTexture2D();
 
             // Fill out the bounding rect width and height so we can calculate the yOffset later if needed
-            boundingRect.X = 0; 
-            boundingRect.Y = 0; 
-            boundingRect.Width = textMetrics.Width;
-            boundingRect.Height = textMetrics.Height;
+            var boundingRect = new RawRectangleF(0, 0, textMetrics.Width, textMetrics.Height);
 
             if (!layoutAvailable)
             {
                 if (dimensions.Width == 8388608)
                 {
-                    dimensions.Width = boundingRect.Width;
+                    dimensions.Width = boundingRect.Right - boundingRect.Left;
                 }
                 if (dimensions.Height == 8388608)
                 {
-                    dimensions.Height = boundingRect.Height;
+                    dimensions.Height = boundingRect.Bottom - boundingRect.Top;
                 }
             }
 
@@ -351,7 +347,7 @@ namespace CocosSharp
                 sharpRenderTarget.Clear(TransparentColor);
 
                 // Draw the text to the bitmap
-                sharpRenderTarget.DrawTextLayout(new Vector2(boundingRect.X, yOffset), textLayout, solidBrush);
+                sharpRenderTarget.DrawTextLayout(new RawVector2(boundingRect.Left, yOffset), textLayout, solidBrush);
 
                 // End our drawing which will commit the rendertarget to the bitmap
                 sharpRenderTarget.EndDraw();
